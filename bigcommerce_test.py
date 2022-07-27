@@ -15,45 +15,7 @@ headers = {
     "Accept": "application/json"
 }
 
-# payload = {
-#     "id": row[0],
-#     "customer_id": row[1],
-#     # "custome_name": row[2],
-#     "billing_address": {
-#         # "first_name": "Jane", row[3] split
-#         # "last_name": "Doe",
-#         "company": "",
-#         "street_1": "555 East Street",
-#         "street_2": "",
-#         "city": "Austin",
-#         "state": "Texas",
-#         "zip": 78108,
-#         "country": "United States",
-#         "country_iso2": "US",
-#         "phone": row[5],
-#         "email": row[4],
-#         "form_fields": [
-#           {
-#             "name": "Delivery Instructions",
-#             "value": "Leave in backyard"
-#           }
-#         ]
-#     },
-#     "date_created": row[6],
-#     "status": row[7],
-#     "subtotal_inc_tax": row[8],
-#     "subtotal_ex_tax": row[9],
-#     "total_tax": row[10],
-#     "shipping_cost_inc_tax": row[11],
-#     "shipping_cost_ex_tax": row[12],
-#     # "shipping_method": row[13],
-#     "handling_cost_inc_tax": row[14],
-#     "handling_cost_ex_tax": row[15],
-#     "store_credit_amount": row[16],
-#     "gift_certificate_amount": row[17],
-#
-# }
-
+# CSV:
 # ['Order ID', 'Customer ID', 'Customer Name', 'Customer Email', 'Customer Phone', 'Order Date', 'Order Status', 'Subtotal (inc tax)', 'Subtotal (ex tax)', 'Tax Total', 'Shipping Cost (inc tax)', 'Shipping Cost (ex tax)', 'Ship Method', 'Handling Cost (inc tax)', 'Handling Cost (ex tax)', 'Store Credit Redeemed', 'Gift Certificate Amount Redeemed', 'Gift Certificate Code', 'Gift Certificate Expiration Date', 'Coupon Details', 'Order Total (inc tax)', 'Order Total (ex tax)', 'Payment Method', 'Total Quantity', 'Total Shipped', 'Date Shipped', 'Order Currency Code', 'Exchange Rate', 'Order Notes', 'Customer Message', 'Billing First Name', 'Billing Last Name', 'Billing Company', 'Billing Street 1', 'Billing Street 2', 'Billing Suburb', 'Billing State', 'Billing Zip', 'Billing Country', 'Billing Phone', 'Billing Email', 'Shipping First Name', 'Shipping Last Name', 'Shipping Company', 'Shipping Street 1', 'Shipping Street 2', 'Shipping Suburb', 'Shipping State', 'Shipping Zip', 'Shipping Country', 'Shipping Phone', 'Shipping Email', 'Product Details', 'Refund Amount', 'Channel ID', 'Channel Name']
 
 def post_order():
@@ -78,26 +40,6 @@ def post_order():
                 "phone": row[39],
                 "email": row[40]
             },
-            # "billing_address": {
-            #     # "first_name": "Jane", row[2] split
-            #     # "last_name": "Doe",
-            #     "company": "",
-            #     "street_1": "555 East Street",
-            #     "street_2": "",
-            #     "city": "Austin",
-            #     "state": "Texas",
-            #     "zip": 78108,
-            #     "country": "United States",
-            #     "country_iso2": "US",
-            #     "phone": row[4],
-            #     "email": row[3],
-            #     "form_fields": [
-            #       {
-            #         "name": "Delivery Instructions",
-            #         "value": "Leave in backyard"
-            #       }
-            #     ]
-            # },
             "date_created": row[5],
             "status": row[6],
             "subtotal_inc_tax": row[7],
