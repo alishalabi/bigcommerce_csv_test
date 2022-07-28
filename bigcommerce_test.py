@@ -5,15 +5,30 @@ import requests
 import json
 import csv
 
+from datetime import datetime
+# from email import utils
+import time
+
 hash2 = os.environ.get("STORE_HASH2")
 api_key2 = os.environ.get("API_TOKEN2")
 
+hash1 = os.environ.get("STORE_HASH1")
+api_key1 = os.environ.get("API_TOKEN1")
+
 get_url = f"https://api.bigcommerce.com/stores/{hash2}/v2/orders"
-headers = {
+get_headers = {
     "X-Auth-Token": api_key2,
     "Content-Type": "application/json",
     "Accept": "application/json"
 }
+
+post_url = f"https://api.bigcommerce.com/stores/{hash1}/v2/orders"
+post_headers = {
+    "X-Auth-Token": api_key1,
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+}
+
 
 # CSV:
 # ['Order ID', 'Customer ID', 'Customer Name', 'Customer Email', 'Customer Phone', 'Order Date', 'Order Status', 'Subtotal (inc tax)', 'Subtotal (ex tax)', 'Tax Total', 'Shipping Cost (inc tax)', 'Shipping Cost (ex tax)', 'Ship Method', 'Handling Cost (inc tax)', 'Handling Cost (ex tax)', 'Store Credit Redeemed', 'Gift Certificate Amount Redeemed', 'Gift Certificate Code', 'Gift Certificate Expiration Date', 'Coupon Details', 'Order Total (inc tax)', 'Order Total (ex tax)', 'Payment Method', 'Total Quantity', 'Total Shipped', 'Date Shipped', 'Order Currency Code', 'Exchange Rate', 'Order Notes', 'Customer Message', 'Billing First Name', 'Billing Last Name', 'Billing Company', 'Billing Street 1', 'Billing Street 2', 'Billing Suburb', 'Billing State', 'Billing Zip', 'Billing Country', 'Billing Phone', 'Billing Email', 'Shipping First Name', 'Shipping Last Name', 'Shipping Company', 'Shipping Street 1', 'Shipping Street 2', 'Shipping Suburb', 'Shipping State', 'Shipping Zip', 'Shipping Country', 'Shipping Phone', 'Shipping Email', 'Product Details', 'Refund Amount', 'Channel ID', 'Channel Name']
@@ -23,76 +38,88 @@ def post_order():
     f = open(url, "r")
     csv_reader = csv.reader(f)
     for row in csv_reader:
-        payload = {
-            "id": row[0],
-            "customer_id": row[1],
-            # "custome_name": row[2],
-            "billing_address": {
-                "first_name": row[30],
-                "last_name": row[31],
-                "company": row[32],
-                "street_1": row[33],
-                "street_2": row[34],
-                "suburb": row[35],
-                "state": row[36],
-                "zip": row[37],
-                "country": row[38],
-                "phone": row[39],
-                "email": row[40]
-            },
-            "date_created": row[5],
-            "status": row[6],
-            "subtotal_inc_tax": row[7],
-            "subtotal_ex_tax": row[8],
-            "total_tax": row[9],
-            "shipping_cost_inc_tax": row[10],
-            "shipping_cost_ex_tax": row[11],
-            # "shipping_method": row[12],
-            "handling_cost_inc_tax": row[13],
-            "handling_cost_ex_tax": row[14],
-            "store_credit_amount": row[15],
-            "gift_certificate_amount": row[16],
-            # "gift_certificate_code": row[17],
-            # "gift_certificate_exp": row[18],
-            # "coupons": {
-            #     "url": row[19],
-            #     "resource": "/orders/128962/coupons"
-            #  },
-            "subtotal_inc_tax": row[20],
-            "subtotal_ex_tax": row[21],
-            "payment_method": row[22],
-            "items_total": row[23],
-            "items_total": row[24],
-            "date_shipped": row[25],
-            "currency_code": row[26],
-            "currency_exchange_rate": row[27],
-            "staff_notes": row[28],
-            "customer_message": row[29],
-            # "shipping_addresses": {
-            #     "first_name": row[41],
-            #     "last_name": row[42],
-            #     "company": row[43],
-            #     "street_1": row[44],
-            #     "street_2": row[45],
-            #     "suburb": row[46],
-            #     "state": row[47],
-            #     "zip": row[48],
-            #     "country": row[49],
-            #     "phone": row[50],
-            #     "email": row[51]
-            # },
-            # "products": row[52],
-            "refunded_amount": row[53],
-            "channel_id": row[54],
-            "channel_name": row[55]
+        if row[0] != "Order ID":
+            # converted_date_created = datetime.strptime(row[5], "%d/%m/%Y")
+            payload = {
+                "id": row[0],
+                "customer_id": row[1],
+                # "custome_name": row[2],
+                "billing_address": {
+                    "first_name": row[30],
+                    "last_name": row[31],
+                    "company": row[32],
+                    "street_1": row[33],
+                    "street_2": row[34],
+                    # "suburb": row[35], 400
+                    "state": row[36],
+                    "zip": row[37],
+                    "country": row[38],
+                    "phone": row[39],
+                    "email": row[40]
+                },
+                "date_created": datetime.strptime(row[5], "%d/%m/%Y"),
+                # "status": row[6], 400
+                "subtotal_inc_tax": row[7],
+                "subtotal_ex_tax": row[8],
+                # "total_tax": row[9], 400
+                "shipping_cost_inc_tax": row[10],
+                "shipping_cost_ex_tax": row[11],
+                # "shipping_method": row[12],
+                "handling_cost_inc_tax": row[13],
+                "handling_cost_ex_tax": row[14],
+                # "store_credit_amount": row[15], 400
+                # "gift_certificate_amount": row[16], 400
+                # "gift_certificate_code": row[17],
+                # "gift_certificate_exp": row[18],
+                # "coupons": {
+                #     "url": row[19],
+                #     "resource": "/orders/128962/coupons"
+                #  },
+                "subtotal_inc_tax": row[20],
+                "subtotal_ex_tax": row[21],
+                "payment_method": row[22],
+                "items_total": row[23],
+                "items_total": row[24],
+                # "date_shipped": row[25], 400
+                # "currency_exchange_rate": row[27], 400
+                "staff_notes": row[28],
+                "customer_message": row[29],
+                # "shipping_addresses": {
+                #     "first_name": row[41],
+                #     "last_name": row[42],
+                #     "company": row[43],
+                #     "street_1": row[44],
+                #     "street_2": row[45],
+                #     "suburb": row[46],
+                #     "state": row[47],
+                #     "zip": row[48],
+                #     "country": row[49],
+                #     "phone": row[50],
+                #     "email": row[51]
+                # },
+                "products": row[52],
+                "refunded_amount": row[53],
+                "channel_id": row[54],
+                "channel_name": row[55]
 
 
-        }
-        print(payload)
-        return
+            }
+            print(payload["date_created"])
+            r = requests.post(url=post_url, headers=post_headers, json=payload)
+            print(r.text)
+            # print(payload)
+            return
+
+        # print(row[52])
+            # print(payload)
+        # return
         # if row[0] != "Order ID":
         #     print(row)
         #     return
+
+# Product ID: 287, Product Qty: 4,
+# Product SKU: NB-5, Product Name: 5.8 dbi Fiberglass Antenna For HNT Helium Hotspots LoRaWAN (US915) Gray,
+# Product Weight: 0.0000, Product Variation Details: , Product Unit Price: 39.94, Product Total Price: 159.76
 
 def get_all():
     r = requests.get(get_url, headers=headers)
